@@ -7,9 +7,9 @@ export default function Dashboard() {
   const [contenido, setContenido] = useState("");
   const [editando, setEditando] = useState(null);
   const [token, setToken] = useState("");
-  const [rol, setRol] = useState("user"); // por defecto user
+  const [rol, setRol] = useState("user"); 
 
-  // Al cargar la página
+  
   useEffect(() => {
     const t = localStorage.getItem("token");
     if (!t) {
@@ -19,7 +19,7 @@ export default function Dashboard() {
     setToken(t);
     cargarNotas(t);
 
-    // Decodificar el token para obtener rol
+
     try {
       const payload = JSON.parse(atob(t.split(".")[1]));
       setRol(payload.role || "user");
@@ -28,7 +28,7 @@ export default function Dashboard() {
     }
   }, []);
 
-  // Cargar notas desde la API
+ 
   async function cargarNotas(tok) {
     const res = await fetch("/api/notes", {
       headers: { Authorization: `Bearer ${tok}` },
@@ -37,7 +37,7 @@ export default function Dashboard() {
     setNotas(data);
   }
 
-  // Crear nota (todos pueden)
+  
   async function crearNota() {
     if (!contenido.trim()) return;
     await fetch("/api/notes", {
@@ -52,7 +52,7 @@ export default function Dashboard() {
     cargarNotas(token);
   }
 
-  // Editar nota (solo admin)
+  
   async function guardarEdicion(id) {
     if (rol !== "admin") return;
     await fetch(`/api/notes/${id}`, {
@@ -68,7 +68,7 @@ export default function Dashboard() {
     cargarNotas(token);
   }
 
-  // Eliminar nota (solo admin)
+  
   async function eliminarNota(id) {
     if (rol !== "admin") return;
     await fetch(`/api/notes/${id}`, {

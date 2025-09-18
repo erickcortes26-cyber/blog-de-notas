@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -8,31 +8,40 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
 
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await res.json();
+      const data = await res.json();
 
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
 
-      if (data.role === "admin") {
-        router.push("/admin");
+        if (data.role === "admin") {
+          router.push("/admin");
+        } else {
+          router.push("/dashboard");
+        }
       } else {
-        router.push("/dashboard");
+  
+        setError(data.message || "Usuario o contraseña incorrectos");
       }
-    } else {
-      setError(data.message);
+    } catch (err) {
+      console.error(err);
+      setError("Error en la solicitud");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,7 +61,7 @@ export default function LoginPage() {
             Volver
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Correo electrónico</label>
@@ -61,12 +70,12 @@ export default function LoginPage() {
               type="email"
               placeholder="tu.correo@ejemplo.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); setError(""); }}
               required
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
-          
+
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
             <input
@@ -74,26 +83,28 @@ export default function LoginPage() {
               type="password"
               placeholder="Ingresa tu contraseña"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => { setPassword(e.target.value); setError(""); }}
               required
               className="w-full border border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
           </div>
-          
+
           <button 
-            type="submit" 
-            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-md"
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 rounded-lg font-semibold transition-colors shadow-md 
+              ${loading ? "bg-blue-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700 text-white"}`}
           >
-            Iniciar Sesión
+            {loading ? "Cargando..." : "Iniciar Sesión"}
           </button>
         </form>
-        
+
         {error && (
           <div className="mt-4 p-3 bg-red-50 text-red-700 rounded-lg border border-red-200">
             {error}
           </div>
         )}
-        
+
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             ¿No tienes una cuenta?{" "}
@@ -109,3 +120,4 @@ export default function LoginPage() {
     </div>
   );
 }
+

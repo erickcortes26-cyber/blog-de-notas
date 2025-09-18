@@ -1,40 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+Blog de Notas 
 
-## Getting Started
+Este proyecto está hecho con https://nextjs.org/ y fue arrancado usando https://nextjs.org/docs/pages/api-reference/create-next-app
+Es básicamente un blog de notas con su panel de administración, donde tú puedes crear notas y si eres admin puedes editar y borrar como quieras.
 
-First, run the development server:
-
-```bash
+Primero, corre el servidor de desarrollo:
 npm run dev
-# or
+# o
 yarn dev
-# or
+# o
 pnpm dev
-# or
+# o
 bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Después, abre tu navegador en: http://localhost:3000 Y ya estás listo para ver la página. Si quieres cambiar algo, edita pages/index.js y el navegador se actualizará solito.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+Rutas importantes:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Página principal: /
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+Login / Registro de usuarios normales: /login y /register
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Panel admin: /admin 
 
-## Learn More
+Dentro de /admin puedes crear y manejar admins, y ver el dashboard de administración.
 
-To learn more about Next.js, take a look at the following resources:
+Login de admin: /admin/login
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+Registro de admin: /admin/register
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Todo lo que pongas en pages/api se convierte en rutas de API, no páginas normales.
+Por ejemplo:
+pages/api/register --> /api/register
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Estas rutas son perfectas para manejar datos, hacer login, registro y todo lo que no quieres que la gente vea directamente en el front.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.

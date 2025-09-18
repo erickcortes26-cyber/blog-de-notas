@@ -26,7 +26,7 @@ export default function LoginPage() {
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
 
-      // Redirigir al dashboard de admin después del login exitoso
+      
       router.push("/dashboard");
     } else {
       setError(data.message);

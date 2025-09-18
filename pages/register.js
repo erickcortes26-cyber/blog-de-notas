@@ -22,7 +22,6 @@ export default function Register() {
       const data = await res.json();
       setMessage(data.message);
       
-      // Si el registro fue exitoso, redirigir al login después de 2 segundos
       if (res.ok) {
         setTimeout(() => {
           router.push("/login");
